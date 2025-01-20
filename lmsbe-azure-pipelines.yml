@@ -1,0 +1,55 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  name: 'default'
+
+stages:
+  - stage: build
+    displayName: Building Docker Images 
+    jobs:
+    - job: 'BuildFrontend'
+      displayName: Build Docker Frontend Image
+      steps:
+        - task: Checkout@1
+
+        - task: Docker@2
+          displayName: Build Frontend Docker Image
+          inputs:
+            command: build
+            Dockerfile: webapp/Dockerfile
+            tags: |
+              frontend-app:$(Build.BuildId)
+
+    - job: BuildBackend
+      displayName: Build Backend Docker Image
+      steps:
+      - task: Checkout@1
+
+      - task: Docker@2
+        displayName: Build Backend Docker Image
+        inputs:
+          command: build
+          Dockerfile: api/Dockerfile
+          tags: |
+            backend-app:$(Build.BuildId)
+          
+  - stage: Deploy
+    displayName: Deploy Application
+    dependsOn: Build
+    jobs:
+      - job: DeployFrontend
+        displayName: Deploy Frontend
+        steps:
+          - script: |
+              docker run -dt --name frontend-container -p 80:80 frontend-app:$(Build.BuildId)
+            displayName: Run Frontend container
+      
+      - job: DeployBackend
+        displayName: Deploy Backend
+        steps:
+          - script: |
+              docker run -dt --name backend-container -p 3000:3000 backend-app:$(Build.BuildId)
+            displayName: Run Backend container
