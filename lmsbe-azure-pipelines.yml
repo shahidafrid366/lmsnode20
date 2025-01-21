@@ -44,7 +44,7 @@ stages:
         displayName: Deploy Frontend
         steps:
           - script: |
-              docker run -dt --name frontend-container -p 80:80 frontend-app:$(Build.BuildId)
+              docker run -dt --name frontend-container --env-file .env -p 80:80 frontend-app:$(Build.BuildId)
             displayName: Run Frontend container
       
       - job: DeployBackend
