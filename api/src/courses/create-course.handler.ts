@@ -11,21 +11,42 @@ export const createCourseSchema = z.object({
   ),
 });
 
-export const createCourseHandler: RequestHandler = async (req, res, next) => {
-  try {
-    console.log(
-      "🚀 ~ file: create-course.handler.ts ~ line 17 ~ constcreateCourseHandler:RequestHandler= ~ req.body",
-      req.body
-    );
-    const data = await createCourseSchema.parseAsync(req.body);
-    const course = await db.course.create({
-      data,
-    });
-    res.status(201).json({
-      id: course.id,
-      title: course.title,
-    });
-  } catch (error) {
-    next(error);
-  }
+// export const createCourseHandler: RequestHandler = async (req, res, next) => {
+//   try {
+//     console.log(
+//       "🚀 ~ file: create-course.handler.ts ~ line 17 ~ constcreateCourseHandler:RequestHandler= ~ req.body",
+//       req.body
+//     );
+//     const data = await createCourseSchema.parseAsync(req.body);
+//     const course = await db.course.create({
+//       data,
+//     });
+//     res.status(201).json({
+//       id: course.id,
+//       title: course.title,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+export const createCourseHandler: RequestHandler = (req, res, next) => {
+  return (async () => {
+    try {
+      console.log(
+        "🚀 ~ file: create-course.handler.ts ~ line 17 ~ constcreateCourseHandler:RequestHandler= ~ req.body",
+        req.body
+      );
+      const data = await createCourseSchema.parseAsync(req.body);
+      const course = await db.course.create({
+        data,
+      });
+      res.status(201).json({
+        id: course.id,
+        title: course.title,
+      });
+    } catch (error) {
+      next(error);
+    }
+  })();
 };
+
