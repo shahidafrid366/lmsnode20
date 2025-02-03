@@ -48,7 +48,7 @@ export const getCourseHandler: RequestHandler = async (req, res, next): Promise<
 
     data = await getCourseData(courseId);
 
-    return res.json(data);
+    res.json(data);
   } catch (error) {
     next(error);
   }
