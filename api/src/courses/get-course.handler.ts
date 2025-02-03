@@ -3,7 +3,19 @@ import { db } from "../common/db";
 import { IdSchema } from "../common/zod-schemas";
 import { Prisma } from "@prisma/client";
 
-// Helper function to fetch course data
+export const getCourseHandler: RequestHandler = async (req, res, next) => {
+  try {
+    const courseId = IdSchema.parse(req.params.courseId);
+    let data = null;
+
+    data = await getCourseData(courseId);
+
+    return res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getCourseData = async (courseId: number) => {
   const where: Prisma.CourseWhereInput = {
     id: courseId,
@@ -38,18 +50,4 @@ export const getCourseData = async (courseId: number) => {
   });
 
   return data;
-};
-
-// Main handler to get course details
-export const getCourseHandler: RequestHandler = async (req, res, next): Promise<void> => {
-  try {
-    const courseId = IdSchema.parse(req.params.courseId);
-    let data = null;
-
-    data = await getCourseData(courseId);
-
-    res.json(data);
-  } catch (error) {
-    next(error);
-  }
 };
