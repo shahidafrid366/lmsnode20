@@ -32,7 +32,8 @@ function VimeoVideo(props: VimeoVideoProps) {
           `https://player.vimeo.com/video/${props.videoId}`,
           props.params
         )}
-        frameBorder={0}
+        //frameBorder={0}
+        style={{ border: "none" }} // Replacing the above deprecated frameBorder
         // height={'h-[75vh]'}
         // webkitallowfullscreen
         // mozallowfullscreen
