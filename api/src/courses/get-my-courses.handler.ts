@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 import { db } from "../common/db";
 
-// Async function that retrieves enrolled courses
 export const getEnrolledCourses = async () => {
   const data = await db.course.findMany({
     where: {
@@ -18,12 +17,11 @@ export const getEnrolledCourses = async () => {
   return data;
 };
 
-// Explicitly declare the return type as Promise<void>
-export const getMyCoursesHandler: RequestHandler = async (req, res, next): Promise<void> => {
+export const getMyCoursesHandler: RequestHandler = async (req, res, next) => {
   try {
     const data = await getEnrolledCourses();
-    return res.json(data); // Sends data as JSON
+    return res.json(data);
   } catch (error) {
-    next(error); // Pass errors to the error handler
+    next(error);
   }
 };
