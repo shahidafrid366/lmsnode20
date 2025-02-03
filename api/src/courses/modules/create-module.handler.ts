@@ -15,8 +15,7 @@ export const createModuleSchema = z.object({
     .min(1),
 });
 
-// Explicitly declare the return type as Promise<void>
-export const createModuleHandler: RequestHandler = async (req, res, next): Promise<void> => {
+export const createModuleHandler: RequestHandler = async (req, res, next) => {
   try {
     const data = await createModuleSchema.parseAsync(req.body);
     const courseId = await IdSchema.parseAsync(req.params.courseId);
@@ -45,7 +44,6 @@ export const createModuleHandler: RequestHandler = async (req, res, next): Promi
           },
         },
       });
-
       return moduleRecord;
     });
 
