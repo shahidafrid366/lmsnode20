@@ -15,34 +15,69 @@ export const updateModuleSchema = z.object({
     .min(1),
 });
 
-export const updateModuleHandler: RequestHandler = async (req, res, next) => {
-  try {
-    const data = await updateModuleSchema.parseAsync(req.body);
-    const courseId = await IdSchema.parseAsync(req.params.courseId);
-    const moduleId = await IdSchema.parseAsync(req.params.moduleId);
-    const updatedModule = await db.module.update({
-      where: {
-        id: moduleId,
-      },
-      data: {
-        title: data.title,
-        courseId: courseId,
-        topics: {
-          deleteMany: {
-            modulesId: moduleId,
-          },
-          createMany: {
-            data: data.topics,
+// export const updateModuleHandler: RequestHandler = async (req, res, next) => {
+//   try {
+//     const data = await updateModuleSchema.parseAsync(req.body);
+//     const courseId = await IdSchema.parseAsync(req.params.courseId);
+//     const moduleId = await IdSchema.parseAsync(req.params.moduleId);
+//     const updatedModule = await db.module.update({
+//       where: {
+//         id: moduleId,
+//       },
+//       data: {
+//         title: data.title,
+//         courseId: courseId,
+//         topics: {
+//           deleteMany: {
+//             modulesId: moduleId,
+//           },
+//           createMany: {
+//             data: data.topics,
+//           },
+//         },
+//       },
+//     });
+
+//     return res.json({
+//       title: updatedModule.title,
+//       id: updatedModule.id,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+export const updateModuleHandler: RequestHandler = (req, res, next): void => {
+  (async () => {
+    try {
+      const data = await updateModuleSchema.parseAsync(req.body);
+      const courseId = await IdSchema.parseAsync(req.params.courseId);
+      const moduleId = await IdSchema.parseAsync(req.params.moduleId);
+      
+      const updatedModule = await db.module.update({
+        where: {
+          id: moduleId,
+        },
+        data: {
+          title: data.title,
+          courseId: courseId,
+          topics: {
+            deleteMany: {
+              modulesId: moduleId,
+            },
+            createMany: {
+              data: data.topics,
+            },
           },
         },
-      },
-    });
+      });
 
-    return res.json({
-      title: updatedModule.title,
-      id: updatedModule.id,
-    });
-  } catch (error) {
-    next(error);
-  }
+      return res.json({
+        title: updatedModule.title,
+        id: updatedModule.id,
+      });
+    } catch (error) {
+      next(error);
+    }
+  })();
 };
+
