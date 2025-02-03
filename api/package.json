@@ -10,7 +10,7 @@
     "build": "tsc",
     "dev": "ts-node-dev --respawn --pretty --transpile-only --exit-child src/index.ts",
     "test": "echo \"Error: no test specified\"",
-    "seed": "ts-node src/seed/index.ts"
+    "seed": "ts-node src/seed/index.ts",
     "publishConfig": {
     "registry": "http://18.204.136.248:8081/repository/npm-repo-releases-hosted/"
     }
