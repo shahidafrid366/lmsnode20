@@ -11,22 +11,43 @@ const updateCourseSchema = z.object({
   title: z.string().min(1),
 });
 
-export const updateCourseHandler: RequestHandler = async (req, res, next) => {
-  try {
-    // Validate data
-    const courseId = IdSchema.parse(req.params.courseId);
-    const data = updateCourseSchema.parse(req.body);
+// export const updateCourseHandler: RequestHandler = async (req, res, next) => {
+//   try {
+//     // Validate data
+//     const courseId = IdSchema.parse(req.params.courseId);
+//     const data = updateCourseSchema.parse(req.body);
 
-    // Update in db
-    await db.course.update({
-      where: {
+//     // Update in db
+//     await db.course.update({
+//       where: {
+//         id: courseId,
+//       },
+//       data: data,
+//     });
+
+//     return res.sendStatus(200);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+export const updateCourseHandler: RequestHandler = (req, res, next): Promise<void> => {
+  return (async () => {
+    try {
+      // Validate data
+      const courseId = IdSchema.parse(req.params.courseId);
+      const data = updateCourseSchema.parse(req.body);
+
+      // Update in db
+      await db.course.update({
+        where: {
         id: courseId,
       },
       data: data,
-    });
+      });
 
-    return res.sendStatus(200);
-  } catch (error) {
-    next(error);
-  }
+      res.sendStatus(200);
+    } catch (error) {
+      next(error);
+    }
+  })();
 };
