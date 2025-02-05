@@ -3,6 +3,11 @@
   "version": "1.0.3",
   "description": "Konamars LMS API",
   "main": "index.js",
+  "files": [
+    "build/",
+    "package.json",
+    "package-lock.json"
+  ],
   "scripts": {
     "lint": "eslint src/",
     "start": "prisma migrate deploy && node build/index.js",
