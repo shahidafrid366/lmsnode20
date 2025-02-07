@@ -6,7 +6,8 @@
   "files": [
     "build/",
     "package.json",
-    "package-lock.json"
+    "package-lock.json",
+    "tsconfig.json"
   ],
   "scripts": {
     "lint": "eslint src/",
